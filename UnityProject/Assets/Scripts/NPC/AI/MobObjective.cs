@@ -19,6 +19,8 @@ namespace Systems.MobAIs
 		[Tooltip("Allow the objective to happen when mob is unconscious")]
 		public bool AllowUnconscious = false;
 
+        public bool IsStunned = false;
+
 		public void Awake()
 		{
 			mobTile = GetComponent<RegisterTile>();
@@ -40,6 +42,8 @@ namespace Systems.MobAIs
 
 		public void TryAction()
 		{
+            if(IsStunned) return;
+
 			if(mobAI.IsUnconscious && AllowUnconscious == false) return;
 
 			if(mobAI.IsDead && AllowDead == false) return;
@@ -53,7 +57,7 @@ namespace Systems.MobAIs
 
 		protected void Move(Vector3Int dirToMove)
 		{
-			UniversalObjectPhysics.OrNull()?.TryTilePush(dirToMove.To2Int(), null);
+            UniversalObjectPhysics.OrNull()?.TryTilePush(dirToMove.To2Int(), null);
 
 			if (rotatable != null)
 			{
